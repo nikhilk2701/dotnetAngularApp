@@ -18,7 +18,7 @@ namespace API.Exceptions
             services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-            services.Configure<CloudinarySettings>(config.GetSection("CloudinarySettings"));
+            services.Configure<ImagekitSettings>(config.GetSection("ImageKitSettings"));
             services.AddScoped<IPhotoService, PhotoService>();
             return services;
         }

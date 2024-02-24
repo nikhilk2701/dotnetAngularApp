@@ -6,6 +6,7 @@ import { MembersService } from 'src/app/_services/members.service';
 import { take } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 import { NgForm } from '@angular/forms';
+import { Photo } from 'src/app/_models/photo';
 
 @Component({
   selector: 'app-member-edit',

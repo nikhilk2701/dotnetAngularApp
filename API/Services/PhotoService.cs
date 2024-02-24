@@ -1,50 +1,52 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using API.Helpers;
 using API.Interfaces;
 using CloudinaryDotNet;
 using CloudinaryDotNet.Actions;
+using Imagekit.Sdk;
 using Microsoft.Extensions.Options;
 
 namespace API.Services
 {
     public class PhotoService : IPhotoService
     {
-        private readonly Cloudinary _cloudinary;
-        public PhotoService(IOptions<CloudinarySettings> config)
-        {
-            var acc = new Account(
-                config.Value.CloudName,
-                config.Value.ApiKey,
-                config.Value.ApiSecret
-            );
-            _cloudinary = new Cloudinary(acc);
+        private readonly ImagekitClient _imagekitClient;
 
-        }
-        public async Task<ImageUploadResult> AddPhotoAsync(IFormFile file)
+        public PhotoService(IOptions<ImagekitSettings> config)
         {
-            var uploadResult = new ImageUploadResult();
+            ImagekitClient imagekitClient = new ImagekitClient(config.Value.PublicKey, config.Value.PrivateKey, config.Value.CloudUrl);
+            _imagekitClient = imagekitClient;
+        }
+        public async Task<Result> AddPhotoAsync(IFormFile file)
+        {
+            var uploadResult = new Result();
             if (file.Length > 0)
             {
-                using var stream = file.OpenReadStream();
-                var uploadParams = new ImageUploadParams
+                byte[] bytes = await ReadBytesFromFormFileAsync(file);
+                FileCreateRequest ob = new FileCreateRequest
                 {
-                    File = new FileDescription(file.FileName, stream),
-                    Transformation = new Transformation().Height(500).Width(500).Crop("fill").Gravity("face"),
-                    Folder = "dot-net-proj"
+                    file = bytes,
+                    fileName = Guid.NewGuid().ToString(),
+                    folder = "dotnet-angular",
+                    isPrivateFile = false
                 };
-                uploadResult = await _cloudinary.UploadAsync(uploadParams);
+                uploadResult = _imagekitClient.Upload(ob);
 
             }
             return uploadResult;
         }
 
-        public async Task<DeletionResult> DeletePhotoAsync(string publicId)
+        public async Task<ResultDelete> DeletePhotoAsync(string publicId)
         {
-            var delteParams = new DeletionParams(publicId);
-            return await _cloudinary.DestroyAsync(delteParams);
+            return _imagekitClient.DeleteFile(publicId);
+        }
+
+        public async Task<byte[]> ReadBytesFromFormFileAsync(IFormFile file)
+        {
+            using (MemoryStream ms = new MemoryStream())
+            {
+                await file.CopyToAsync(ms);
+                return ms.ToArray();
+            }
         }
     }
 }

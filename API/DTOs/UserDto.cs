@@ -9,5 +9,8 @@ namespace API.DTOs
     {
         public String UserName { get; set; }
         public String Token { get; set; }
+        public String PhotoUrl { get; set; }
+
+        public String KnownAs { get; set; }
     }
 }
