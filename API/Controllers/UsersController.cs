@@ -1,6 +1,8 @@
 using System.Security.Claims;
 using API.DTOs;
 using API.Entities;
+using API.Extensions;
+using API.Helpers;
 using API.Interfaces;
 using API.Services;
 using AutoMapper;
@@ -28,9 +30,18 @@ namespace API.Controllers
         }
         [Authorize]
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<MemberDto>>> GetUsers()
+        public async Task<ActionResult<PagedList<MemberDto>>> GetUsers([FromQuery] UserParams userParams)
         {
-            var users = await _userRepository.GetMembersAsync();
+            var user = await _userRepository.GetUserByUsernameAsync(User.GetUserName());
+
+            userParams.CurrentUserName = user.UserName;
+            if (string.IsNullOrEmpty(userParams.Gender))
+            {
+                userParams.Gender = user.Gender == "male" ? "female" : "male";
+            }
+
+            var users = await _userRepository.GetMembersAsync(userParams);
+            Response.AddPaginationHeader(new PaginationHeader(users.CurrentPage, users.PageSize, users.TotalCount, users.ToatalPages));
             return Ok(users);
         }
         [Authorize]
@@ -43,8 +54,7 @@ namespace API.Controllers
         [HttpPut]
         public async Task<ActionResult> UpdateUser(MemberUpdateDto memberUpdateDto)
         {
-            var userName = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            var user = await _userRepository.GetUserByUsernameAsync(userName);
+            var user = await _userRepository.GetUserByUsernameAsync(User.GetUserName());
 
             if (user == null) return NotFound();
 
@@ -57,8 +67,7 @@ namespace API.Controllers
         [HttpPost("add-photo")]
         public async Task<ActionResult<PhotoDto>> AddPhoto(IFormFile file)
         {
-            var userName = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            var user = await _userRepository.GetUserByUsernameAsync(userName);
+            var user = await _userRepository.GetUserByUsernameAsync(User.GetUserName());
             if (user == null) return NotFound();
 
             var result = await _photoService.AddPhotoAsync(file);
@@ -87,8 +96,7 @@ namespace API.Controllers
 
         public async Task<ActionResult> SetMainPhoto(int photoId)
         {
-            var userName = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            var user = await _userRepository.GetUserByUsernameAsync(userName);
+            var user = await _userRepository.GetUserByUsernameAsync(User.GetUserName());
             if (user == null) return NotFound();
 
             var photo = user.Photos.FirstOrDefault(x => x.Id == photoId);
@@ -110,8 +118,7 @@ namespace API.Controllers
         [HttpDelete("delete-photo/{photoId}")]
         public async Task<ActionResult> DeletePhoto(int photoId)
         {
-            var userName = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            var user = await _userRepository.GetUserByUsernameAsync(userName);
+            var user = await _userRepository.GetUserByUsernameAsync(User.GetUserName());
             var photo = user.Photos.FirstOrDefault(p => p.Id == photoId);
 
             if (photo == null) return NotFound();

@@ -20,6 +20,7 @@ namespace API.Exceptions
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             services.Configure<ImagekitSettings>(config.GetSection("ImageKitSettings"));
             services.AddScoped<IPhotoService, PhotoService>();
+            services.AddScoped<LogUserActivity>();
             return services;
         }
     }

@@ -12,5 +12,7 @@ namespace API.DTOs
         public String PhotoUrl { get; set; }
 
         public String KnownAs { get; set; }
+
+        public String Gender { get; set; }
     }
 }

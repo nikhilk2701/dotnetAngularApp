@@ -31,7 +31,7 @@
     >
       <img src="{{ user.photoUrl || './assets/user.png' }}" alt="user Photo" />
       <button class="btn btn-success ms-2" dropdownToggle>
-        Welcome {{ user.userName.toString() | titlecase }}
+        Welcome {{ user.knownAs.toString() | titlecase }}
       </button>
 
       <div class="dropdown-menu" *dropdownMenu>
