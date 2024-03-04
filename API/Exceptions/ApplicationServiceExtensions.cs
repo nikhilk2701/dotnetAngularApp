@@ -21,6 +21,7 @@ namespace API.Exceptions
             services.Configure<ImagekitSettings>(config.GetSection("ImageKitSettings"));
             services.AddScoped<IPhotoService, PhotoService>();
             services.AddScoped<LogUserActivity>();
+            services.AddScoped<ILikesRepository, LikesRepository>();
             return services;
         }
     }

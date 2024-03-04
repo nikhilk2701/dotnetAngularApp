@@ -121,4 +121,16 @@ export class MembersService {
   deletePhoto(photId: number) {
     return this.http.delete(this.baseUrl + 'users/delete-photo/' + photId);
   }
+
+  addLike(username: string) {
+    var res = this.http.post(this.baseUrl + 'likes/' + username, {});
+    console.log(username);
+    return res;
+  }
+
+  getLikes(predicate: string) {
+    return this.http.get<Member[]>(
+      this.baseUrl + 'likes?predicate=' + predicate
+    );
+  }
 }
