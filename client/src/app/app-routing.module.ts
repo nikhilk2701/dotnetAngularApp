@@ -9,11 +9,16 @@ import { NotFoundComponent } from './errors/not-found/not-found.component';
 import { MemberEditComponent } from './members/member-edit/member-edit.component';
 import { preventUnsavedChangesGuard } from './_guards/prevent-unsaved-changes.guard';
 import { RegisterComponent } from './register/register.component';
+import { memberDetailResolver } from './_resolvers/member-detail.resolver';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'members', component: MemberListComponent },
-  { path: 'members/:username', component: MemberDetailComponent },
+  {
+    path: 'members/:username',
+    component: MemberDetailComponent,
+    resolve: { member: memberDetailResolver },
+  },
   {
     path: 'member/edit',
     component: MemberEditComponent,

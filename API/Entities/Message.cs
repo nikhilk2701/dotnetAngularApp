@@ -11,7 +11,7 @@ namespace API.Entities
 
         public int RecipientId { get; set; }
 
-        public string recipientUsername { get; set; }
+        public string RecipientUsername { get; set; }
 
         public AppUser Recipient { get; set; }
 
@@ -22,6 +22,6 @@ namespace API.Entities
         public DateTime MessageSent { get; set; } = DateTime.UtcNow;
 
         public bool SenderDeleted { get; set; }
-        public bool recipientDeleted { get; set; }
+        public bool RecipientDeleted { get; set; }
     }
 }

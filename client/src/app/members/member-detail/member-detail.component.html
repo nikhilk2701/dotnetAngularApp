@@ -1,4 +1,4 @@
-<div class="row" *ngIf="member">
+<div class="row">
   <div class="col-4">
     <div class="card">
       <img
@@ -27,32 +27,40 @@
       <div class="card-footer">
         <div class="btn-group d-flex">
           <button class="btn btn-primary">Like</button>
-          <button class="btn btn-success">Messages</button>
+          <button class="btn btn-success" (click)="selectTab('Messages')">
+            Messages
+          </button>
         </div>
       </div>
     </div>
   </div>
   <div class="col-8">
-    <tabset class="member-tabset">
-      <tab heading="About {{ member.knownAs }}">
+    <tabset class="member-tabset" #memberTabs>
+      <tab
+        heading="About {{ member.knownAs }}"
+        (selectTab)="onTabActivated($event)"
+      >
         <h4>Introduction</h4>
         <p>{{ member.introduction }}</p>
         <h4>Looking For</h4>
         <p>{{ member.lookingFor }}</p></tab
       >
-      <tab heading="Interests">
+      <tab heading="Interests" (selectTab)="onTabActivated($event)">
         <h4>Interests</h4>
         <p>{{ member.interests }}</p>
       </tab>
-      <tab heading="Photos">
+      <tab heading="Photos" (selectTab)="onTabActivated($event)">
         <div class="image-grid">
           <div *ngFor="let imageUrl of images" class="image-item">
             <img [src]="imageUrl" alt="Image" />
           </div>
         </div>
       </tab>
-      <tab heading="Messages">
-        <p>Messages will go here</p>
+      <tab heading="Messages" (selectTab)="onTabActivated($event)">
+        <app-member-messages
+          [messages]="messages"
+          [username]="member.userName"
+        ></app-member-messages>
       </tab>
     </tabset>
   </div>
