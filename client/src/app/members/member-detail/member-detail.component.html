@@ -3,7 +3,10 @@
     <div class="card">
       <img
         class="img-thumbnail"
-        src="{{ member.photoUrl || '/assets/user.png' }} "
+        src="{{
+          member.photoUrl ||
+            'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcReomz733Bvj52fIyCAh_4emmEM6HiGM0WveT2M03XpLg&s'
+        }} "
         alt="{{ member.knownAs }}"
       />
       <div class="card-body">

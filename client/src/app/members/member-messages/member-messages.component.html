@@ -10,7 +10,10 @@
           <span class="chat-image float-end">
             <img
               class="rounded-circle"
-              src="{{ message.senderPhotoUrl }}"
+              src="{{
+                message.senderPhotoUrl ||
+                  'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcReomz733Bvj52fIyCAh_4emmEM6HiGM0WveT2M03XpLg&s'
+              }}"
               alt="image of user"
             />
           </span>

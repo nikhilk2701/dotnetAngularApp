@@ -1,7 +1,10 @@
 <div class="card mb-4" *ngIf="member">
   <div class="card-img-wrapper">
     <img
-      src="{{ member.photoUrl }}"
+      src="{{
+        member.photoUrl ||
+          'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcReomz733Bvj52fIyCAh_4emmEM6HiGM0WveT2M03XpLg&s'
+      }}"
       alt="{{ member.knownAs }}"
       class="card-img-top"
     />

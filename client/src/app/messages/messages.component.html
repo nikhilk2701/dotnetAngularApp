@@ -54,7 +54,10 @@
         <td *ngIf="container === 'Outbox'">
           <img
             class="img-circle rounded-circle me-2"
-            src="{{ item.recipientPhotoUrl }}"
+            src="{{
+              item.recipientPhotoUrl ||
+                'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcReomz733Bvj52fIyCAh_4emmEM6HiGM0WveT2M03XpLg&s'
+            }}"
             alt="recipient photo"
           />
           <strong>{{ item.recipientUsername | titlecase }}</strong>
@@ -62,7 +65,10 @@
         <td *ngIf="container !== 'Outbox'">
           <img
             class="img-circle rounded-circle"
-            src="{{ item.senderPhotoUrl }}"
+            src="{{
+              item.senderPhotoUrl ||
+                'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcReomz733Bvj52fIyCAh_4emmEM6HiGM0WveT2M03XpLg&s'
+            }}"
             alt="sender photo"
           />
           <strong>{{ item.senderUsername | titlecase }}</strong>

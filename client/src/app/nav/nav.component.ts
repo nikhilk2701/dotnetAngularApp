@@ -12,6 +12,7 @@ import { Toast, ToastrService } from 'ngx-toastr';
 })
 export class NavComponent implements OnInit {
   model: any = {};
+  link: string = '/client/user.png';
 
   constructor(
     public accountService: AccountService,

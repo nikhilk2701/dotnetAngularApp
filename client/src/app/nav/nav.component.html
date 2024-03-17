@@ -21,6 +21,11 @@
             >Messages</a
           >
         </li>
+        <li *appHasRole="['Admin', 'Moderator']" class="nav-item">
+          <a class="nav-link" routerLink="/admin" routerLinkActive="active"
+            >Admin</a
+          >
+        </li>
       </ng-container>
     </ul>
 
@@ -29,7 +34,13 @@
       *ngIf="accountService.currentUser$ | async as user"
       dropdown
     >
-      <img src="{{ user.photoUrl || './assets/user.png' }}" alt="user Photo" />
+      <img
+        src="{{
+          user.photoUrl ||
+            'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcReomz733Bvj52fIyCAh_4emmEM6HiGM0WveT2M03XpLg&s'
+        }}"
+        alt="user Photo"
+      />
       <button class="btn btn-success ms-2" dropdownToggle>
         Welcome {{ user.knownAs.toString() | titlecase }}
       </button>
